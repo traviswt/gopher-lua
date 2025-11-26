@@ -115,6 +115,8 @@ type Options struct {
 	Stdout io.WriteCloser
 	// Stderr stream. Defaults to os.Stderr
 	Stderr io.WriteCloser
+	// State level Env Vars
+	Env map[string]string
 }
 
 /* }}} */
@@ -1418,6 +1420,7 @@ func NewState(opts ...Options) *LState {
 			Stdin:         os.Stdin,
 			Stdout:        os.Stdout,
 			Stderr:        os.Stderr,
+			Env:           make(map[string]string),
 		})
 		ls.OpenLibs()
 	} else {

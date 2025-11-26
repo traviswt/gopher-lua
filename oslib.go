@@ -106,7 +106,7 @@ func osExecute(L *LState) int {
 	outWriter.Close()
 	errWriter.Close()
 	<-copyDone
-	
+
 	if err != nil || !ps.Success() {
 		L.Push(LNumber(1))
 		return 1
@@ -160,6 +160,13 @@ func osDate(L *LState) int {
 func osGetEnv(L *LState) int {
 	v := os.Getenv(L.CheckString(1))
 	if len(v) == 0 {
+		if L.Options.Env != nil {
+			v, ok := L.Options.Env[L.CheckString(1)]
+			if ok {
+				L.Push(LString(v))
+				return 1
+			}
+		}
 		L.Push(LNil)
 	} else {
 		L.Push(LString(v))
